@@ -1,4 +1,4 @@
-const allProducts = [
+const allValidProducts = [
   {
     id: 1,
     name: "Martelo de Thor",
@@ -13,6 +13,14 @@ const allProducts = [
   },
 ];
 
+const oneValidProduct = [
+  {
+    id: 1,
+    name: "Martelo de Thor",
+  },
+];
+
 module.exports = {
-  allProducts,
+  allValidProducts,
+  oneValidProduct,
 };

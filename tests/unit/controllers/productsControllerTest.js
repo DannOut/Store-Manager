@@ -9,32 +9,53 @@ const { expect } = chai;
 chai.use(sinonChai);
 
 describe("Testes de unidade do products controller", function () {
-  afterEach(sinon.restore);
+  describe("Recuperando Informações de Produtos", function () {
+    afterEach(sinon.restore);
 
-  beforeEach(function () {
-    sinon
-      .stub(productsServices, "findAll")
-      .resolves({ type: null, message: allProducts });
-  });
-  it("é chamado com o código 200", async function () {
-    const res = {};
-    const req = {};
+    beforeEach(function () {
+      sinon
+        .stub(productsServices, "findAll")
+        .resolves({ type: null, message: allProducts });
+    });
 
-    res.status = sinon.stub().returns(res);
-    res.json = sinon.stub().returns();
-    await productsController.findAll(req, res);
+    it("Lista de Produtos é chamado com o código 200", async function () {
+      const res = {};
+      const req = {};
 
-    expect(res.status).to.have.been.calledOnceWith(200);
-  });
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      await productsController.findAll(req, res);
 
-  it("retorna toda a lista de produtos", async function () {
-    const res = {};
-    const req = {};
+      expect(res.status).to.have.been.calledOnceWith(200);
+    });
 
-    res.status = sinon.stub().returns(res);
-    res.json = sinon.stub().returns();
-    await productsController.findAll(req, res);
+    it("retorna toda a lista de produtos", async function () {
+      const res = {};
+      const req = {};
 
-    expect(res.json).to.have.been.calledWith(allProducts);
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      await productsController.findAll(req, res);
+
+      expect(res.json).to.have.been.calledWith(allProducts);
+    });
+
+    it("Produto é chamado e retorna código de erro 404", async function () {
+      const res = {};
+      const req = {};
+      
+    });
+
+    it("Produto é chamado e retorna código 200"), async function () {
+      const res = {};
+      const req = {};
+
+    };
+
+    it("Retorna o produto esperado ao passar o id 1", async function () {
+      const res = {};
+      const req = {};
+
+    });
   });
 });
