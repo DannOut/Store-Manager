@@ -1,3 +1,5 @@
+const validNameProduct = "Martelo de Thor";
+
 const allValidProducts = [
   {
     id: 1,
@@ -13,14 +15,20 @@ const allValidProducts = [
   },
 ];
 
-const oneValidProduct = [
+const oneValidProduct =
   {
     id: 1,
     name: "Martelo de Thor",
-  },
-];
+  }
+;
+
+const newValidProduct = {
+  name: "ProdutoX",
+};
 
 module.exports = {
   allValidProducts,
   oneValidProduct,
+  newValidProduct,
+  validNameProduct,
 };
