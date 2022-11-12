@@ -9,9 +9,9 @@ const findAll = async (_req, res) => {
 
 const findById = async (req, res) => {
   const { id } = req.params;
+
   const { type, message } = await productsServices.findById(Number(id));
-  console.log(message);
-  if (type) return res.status(errorMap.mapError(type)).json(message);
+  if (type) return res.status(errorMap.mapError(type)).json({ message });
 
   res.status(200).json(message);
 };
