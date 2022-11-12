@@ -85,10 +85,11 @@ describe("Testes de unidade do products controller", function () {
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns();
       await productsController.findById(req, res);
-
       expect(res.status).to.have.been.calledWith(404);
       // ! TESTAR LINHA ABAIXO
-      // expect(res.message).to.have.been.calledWith("Product not found");
+      expect(res.json).to.have.been.calledWith({
+        message: "Product not found",
+      });
     });
   });
 });
