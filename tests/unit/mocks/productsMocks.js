@@ -15,15 +15,13 @@ const allValidProducts = [
   },
 ];
 
-const oneValidProduct =
-  {
-    id: 1,
-    name: "Martelo de Thor",
-  }
-;
+const oneValidProduct = {
+  id: 1,
+  name: "Martelo de Thor",
+};
 
 const newValidProduct = {
-  name: "ProdutoX",
+  name: "Martelo de Thor",
 };
 
 module.exports = {

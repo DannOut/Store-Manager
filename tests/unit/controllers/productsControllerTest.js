@@ -18,9 +18,8 @@ const FIND_BY_ID = "findById";
 const FIND_ALL = "findAll";
 
 describe("Testes de unidade do products controller", function () {
+  afterEach(sinon.restore);
   describe("Recuperando Informações de todos os Produtos", function () {
-    afterEach(sinon.restore);
-
     beforeEach(function () {
       sinon
         .stub(productsServices, FIND_ALL)
@@ -51,8 +50,6 @@ describe("Testes de unidade do products controller", function () {
   });
 
   describe("Recuperando informações do produto selecionado", () => {
-    afterEach(sinon.restore);
-
     beforeEach(function () {
       sinon
         .stub(productsServices, FIND_BY_ID)
@@ -82,7 +79,6 @@ describe("Testes de unidade do products controller", function () {
   });
 
   describe("Erro ao recuperar informações do produto selecionado", async function () {
-    afterEach(sinon.restore);
     it("Produto é chamado e retorna código de erro 404", async function () {
       sinon
         .stub(productsServices, FIND_BY_ID)
@@ -102,8 +98,6 @@ describe("Testes de unidade do products controller", function () {
     });
   });
   describe("Inserindo um produto no banco de dados", function () {
-    afterEach(sinon.restore);
-
     it("Retornando o produto cadastrado", async function () {
       sinon
         .stub(productsServices, "createProduct")

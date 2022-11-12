@@ -19,8 +19,8 @@ const NOT_FOUND = "NOT_FOUND";
 const INVALID_VALUE = "INVALID_VALUE";
 
 describe("Testes de unidade do products service", function () {
+  afterEach(sinon.restore);
   describe("Recuperando Informações de Produtos", function () {
-    afterEach(sinon.restore);
 
     it("Retorna a listagem de todos os produtos", async function () {
       sinon.stub(productsModel, FIND_ALL).resolves(allValidProducts);

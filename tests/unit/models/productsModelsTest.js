@@ -7,8 +7,8 @@ const connection = require("../../../src/models/connection");
 const EXECUTE = 'execute'
 
 describe("Testes de unidade do products model", function () {
+  afterEach(sinon.restore);
   describe("Recuperando Informações de Produtos", function () {
-    afterEach(sinon.restore);
     it("Retorna a listagem de todos os produtos", async function () {
       sinon.stub(connection, EXECUTE).resolves([allValidProducts]);
       const result = await productsModel.findAll();
