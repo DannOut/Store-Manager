@@ -18,16 +18,16 @@
     "colId": "history",
     "containerId": "",
     "name": "localhost:3000/products",
-    "url": "localhost:3000/products",
+    "url": "localhost:3000/sales",
     "method": "POST",
     "sortNum": 0,
     "created": "2022-11-11T20:11:44.695Z",
-    "modified": "2022-11-12T13:23:35.565Z",
+    "modified": "2022-11-13T13:38:24.763Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"name\": \"NARUTO\"\n}\n",
+      "raw": "[\n  {\n    \"quantity\": 1\n  }\n]",
       "form": []
     },
     "tests": []

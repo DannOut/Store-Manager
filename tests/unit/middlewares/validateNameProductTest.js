@@ -1,9 +1,8 @@
 const sinon = require("sinon");
 const chai = require("chai");
 const sinonChai = require("sinon-chai");
-const { validNameProduct } = require("../mocks/productsMocks");
 
-const validateNameProduct = require("../../../src/middlewares/validateName");
+const validateNameProduct = require("../../../src/middlewares/validateProductName");
 
 const { expect } = chai;
 chai.use(sinonChai);
@@ -23,7 +22,7 @@ describe("Recuperando Informações de todos os Produtos", function () {
     expect(res.json).to.have.been.calledWith({ message: '"name" is required' });
   });
 
-  it("Retornando Erro ao não passar name com tamanho inválido", async function () {
+  it("Retornando Erro passar name com tamanho inválido", async function () {
     const res = {};
     const req = { body: { name: "Dan" } };
 

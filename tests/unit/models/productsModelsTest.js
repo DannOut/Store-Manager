@@ -23,6 +23,7 @@ describe("Testes de unidade do products model", function () {
       expect(result).to.be.deep.equal(oneValidProduct);
     });
   });
+
   describe("Inserindo um produto no banco de dados", function () {
     it("Retornando o produto cadastrado", async function () {
       sinon.stub(connection, EXECUTE).resolves([{ insertId: 1 }]);
