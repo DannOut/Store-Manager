@@ -37,7 +37,8 @@ const findById = async (id) => {
   const error = validateId(id);
   if (error.type) return error;
   const sales = await salesModel.findById(id);
-  if (sales) return { type: null, message: sales };
+
+  if (sales.length !== 0 || undefined) return { type: null, message: sales };
   return { type: 'NOT_FOUND', message: 'Sale not found' };
 };
 

@@ -17,7 +17,7 @@ const insertSalesProducts = async ({ salesId, productId, quantity }) => {
 
 const findAll = async () => {
   const [result] = await connection.execute(
-  `SELECT SP.sale_id, SP.product_id, SP.quantity, SA.date
+  `SELECT SP.sale_id AS saleId, SP.product_id AS productId, SP.quantity, SA.date
   FROM StoreManager.sales_products AS SP
   INNER JOIN StoreManager.sales AS SA
   ON SA.id = SP.sale_id
@@ -28,13 +28,13 @@ const findAll = async () => {
 
 const findById = async (salesId) => {
   const [result] = await connection.execute(
-  `SELECT SP.product_id, SP.quantity, SA.date
+    `SELECT SP.product_id AS productId, SP.quantity, SA.date
   FROM StoreManager.sales_products AS SP
   INNER JOIN StoreManager.sales AS SA
   ON SA.id = SP.sale_id
   WHERE SA.id = ?
   ORDER BY SP.sale_id, SP.product_id;`,
-  [salesId],
+    [salesId],
   );
   return result;
 };

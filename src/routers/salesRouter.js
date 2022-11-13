@@ -11,5 +11,8 @@ router.post(
   salesController.createSalesProducts,
 );
 
+router.get('/', salesController.findAll);
+router.get('/:id', salesController.findById);
+
 // END ROUTERS
 module.exports = router;

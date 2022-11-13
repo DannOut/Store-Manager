@@ -15,7 +15,6 @@ const FIND_BY_ID = "findById";
 const FIND_ALL = "findAll";
 
 // * ERROR MESSAGES
-const PRODUCT_NOT_FOUND = "Product not found";
 const SALE_NOT_FOUND = "Sale not found";
 const NOT_FOUND = "NOT_FOUND";
 const INVALID_VALUE = "INVALID_VALUE";
@@ -46,7 +45,7 @@ describe("Testes de unidade do Sales service", function () {
     });
 
     it("retorna um erro caso não exista a sale do id selecionado", async function () {
-      sinon.stub(salesModel, FIND_BY_ID).resolves(undefined);
+      sinon.stub(salesModel, FIND_BY_ID).resolves([]);
       const result = await salesServices.findById(1);
       expect(result.type).to.deep.equal(NOT_FOUND);
       expect(result.message).to.deep.equal(SALE_NOT_FOUND);
