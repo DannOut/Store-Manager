@@ -28,7 +28,7 @@ describe("Recuperando Informações de todas as sales", function () {
   });
 
   //! SKIPADO
-  it.skip("Retornando Erro ao passar ProductId inválido", async function () {
+  it("Retornando Erro ao passar ProductId inválido", async function () {
     const res = {};
     const req = { body: invalidProductId };
 
@@ -36,7 +36,7 @@ describe("Recuperando Informações de todas as sales", function () {
     res.json = sinon.stub().returns();
     validateSalesProducts(req, res);
 
-    expect(res.status).to.have.been.calledWith(404);
+    expect(res.status).to.have.been.calledWith(422);
     expect(res.json).to.have.been.calledWith({
       message: '"productId" must be greater than or equal to 1',
     });

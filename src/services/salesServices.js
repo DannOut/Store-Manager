@@ -21,7 +21,7 @@ const createSalesProducts = async (salesArray) => {
   await Promise.all(
     salesArray.map(async (eachSale) => {
       const teste = { salesId, ...eachSale };
-      salesModel.insertSalesProducts(teste);
+      await salesModel.insertSalesProducts(teste);
     }),
   );
   return { type: null, message: { id: salesId, itemsSold: salesArray } };
