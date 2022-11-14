@@ -5,7 +5,8 @@ const createSalesProducts = async (req, res) => {
   //* array
   const arrayBody = req.body;
 
-  const { message } = await salesServices.createSalesProducts(arrayBody);
+  const { type, message } = await salesServices.createSalesProducts(arrayBody);
+  if (type) return res.status(errorMap.mapError(type)).json({ message });
 
   return res.status(201).json(message);
 };
