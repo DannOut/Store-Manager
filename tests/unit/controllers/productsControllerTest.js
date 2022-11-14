@@ -5,6 +5,7 @@ const {
   allValidProducts,
   oneValidProduct,
   validNameProduct,
+  newValidProduct,
 } = require("../mocks/productsMocks");
 const productsController = require("../../../src/controllers/productsController");
 const productsServices = require("../../../src/services/productsServices");
@@ -12,10 +13,15 @@ const productsServices = require("../../../src/services/productsServices");
 const { expect } = chai;
 chai.use(sinonChai);
 
-const PRODUCT_NOT_FOUND = "Product not found";
-const NOT_FOUND = "NOT_FOUND";
+//* FUNCTION MESSAGES
 const FIND_BY_ID = "findById";
 const FIND_ALL = "findAll";
+const INSERT = "insert";
+const UPDATE = "update";
+
+// * ERROR MESSAGES
+const PRODUCT_NOT_FOUND = "Product not found";
+const NOT_FOUND = "NOT_FOUND";
 
 describe("Testes de unidade do products controller", function () {
   afterEach(sinon.restore);
@@ -113,6 +119,59 @@ describe("Testes de unidade do products controller", function () {
 
       expect(res.status).to.have.been.calledWith(201);
       expect(res.json).to.have.been.calledWith(oneValidProduct);
+    });
+  });
+
+  describe("Atualizando um produto no banco de dados", function () {
+    it("retorna um produto atualizado", async function () {
+      sinon
+        .stub(productsServices, UPDATE)
+        .resolves({ type: null, message: oneValidProduct });
+
+      const res = {};
+      const req = { body: newValidProduct, params: { id: 1 } };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      await productsController.update(req, res);
+
+      expect(res.status).to.have.been.calledWith(200);
+      expect(res.json).to.have.been.calledWith(oneValidProduct);
+    });
+
+    it("retorna erro caso não encontre o id", async function () {
+      sinon
+        .stub(productsServices, UPDATE)
+        .resolves({ type: NOT_FOUND, message: PRODUCT_NOT_FOUND });
+
+      const res = {};
+      const req = { body: newValidProduct, params: { id: 999 } };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      await productsController.update(req, res);
+
+      expect(res.status).to.have.been.calledWith(404);
+      expect(res.json).to.have.been.calledWith({ message: PRODUCT_NOT_FOUND });
+    });
+
+    it("retorna erro caso não seja passado name", async function () {
+      sinon
+        .stub(productsServices, UPDATE)
+        .resolves({ type: NOT_FOUND, message: PRODUCT_NOT_FOUND });
+
+      const res = {};
+      const req = { body: {}, params: { id: 1 } };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      await productsController.update(req, res);
+
+      expect(res.status).to.have.been.calledWith(404);
+      expect(res.json).to.have.been.calledWith({ message: PRODUCT_NOT_FOUND });
     });
   });
 });

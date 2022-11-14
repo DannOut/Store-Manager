@@ -1,6 +1,9 @@
 const productsModel = require('../models/productsModel');
 const { validateId } = require('./validations/inputValuesValidations');
 
+const NOT_FOUND = 'NOT_FOUND';
+const PRODUCT_NOT_FOUND = 'Product not found';
+
 const findAll = async () => {
   const allProducts = await productsModel.findAll();
   return { type: null, message: allProducts };
@@ -13,7 +16,7 @@ const findById = async (id) => {
   const product = await productsModel.findById(id);
 
   if (product) return { type: null, message: product };
-  return { type: 'NOT_FOUND', message: 'Product not found' };
+  return { type: NOT_FOUND, message: PRODUCT_NOT_FOUND };
 };
 
 const createProduct = async (name) => {
@@ -23,8 +26,20 @@ const createProduct = async (name) => {
   return { type: null, message: newProduct };
 };
 
+const update = async (id, nameToUpdate) => {
+  const checkIfProductExists = await productsModel.findById(id);
+
+  if (checkIfProductExists) {
+    const newProductToUpdate = await productsModel.update(id, nameToUpdate);
+    return { type: null, message: newProductToUpdate };
+  }
+
+  return { type: NOT_FOUND, message: PRODUCT_NOT_FOUND };
+};
+
 module.exports = {
   findAll,
   findById,
   createProduct,
+  update,
 };

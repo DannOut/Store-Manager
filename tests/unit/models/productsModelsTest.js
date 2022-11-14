@@ -1,10 +1,15 @@
 const { expect } = require("chai");
 const sinon = require("sinon");
 const productsModel = require("../../../src/models/productsModel");
-const { allValidProducts, oneValidProduct, newValidProduct } = require("../mocks/productsMocks");
+const {
+  allValidProducts,
+  oneValidProduct,
+  newValidProduct,
+  validNameProduct,
+} = require("../mocks/productsMocks");
 const connection = require("../../../src/models/connection");
 
-const EXECUTE = 'execute'
+const EXECUTE = "execute";
 
 describe("Testes de unidade do products model", function () {
   afterEach(sinon.restore);
@@ -31,5 +36,21 @@ describe("Testes de unidade do products model", function () {
 
       expect(result).to.equal(1);
     });
-  })
+
+    describe("Atualizando um produto no banco de dados", function () {
+      it.skip("retorna changeRows atualizado igual a 1", async function () {
+        sinon.stub(connection, EXECUTE).resolves([ { changedRows: 1 } ]);
+        const result = await productsModel.update(1, newValidProduct);
+
+        expect(result).to.be.deep.equal({ changedRows: 1 });
+      });
+
+      it("retorna um produto atualizado", async function () {
+        sinon.stub(connection, EXECUTE).resolves(oneValidProduct)
+        const result = await productsModel.update(1, validNameProduct);
+
+        expect(result).to.be.deep.equal(oneValidProduct)
+      });
+    });
+  });
 });

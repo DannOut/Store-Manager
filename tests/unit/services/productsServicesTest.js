@@ -5,6 +5,7 @@ const {
   allValidProducts,
   oneValidProduct,
   validNameProduct,
+  newValidProduct,
 } = require("../mocks/productsMocks");
 const productsServices = require("../../../src/services/productsServices");
 
@@ -12,6 +13,7 @@ const productsServices = require("../../../src/services/productsServices");
 const FIND_BY_ID = "findById";
 const FIND_ALL = "findAll";
 const INSERT = "insert";
+const UPDATE = "update";
 
 // * ERROR MESSAGES
 const PRODUCT_NOT_FOUND = "Product not found";
@@ -21,7 +23,6 @@ const INVALID_VALUE = "INVALID_VALUE";
 describe("Testes de unidade do products service", function () {
   afterEach(sinon.restore);
   describe("Recuperando Informações de Produtos", function () {
-
     it("Retorna a listagem de todos os produtos", async function () {
       sinon.stub(productsModel, FIND_ALL).resolves(allValidProducts);
       const result = await productsServices.findAll();
@@ -56,6 +57,23 @@ describe("Testes de unidade do products service", function () {
       const result = await productsServices.createProduct(validNameProduct);
       expect(result.type).to.equal(null);
       expect(result.message).to.deep.equal(allValidProducts[0]);
+    });
+  });
+
+  describe("Atualizando um produto no banco de dados", function () {
+    it("retorna um produto atualizado", async function () {
+      sinon.stub(productsModel, UPDATE).resolves(oneValidProduct);
+      const result = await productsServices.update(1, newValidProduct);
+
+      expect(result.type).to.equal(null);
+      expect(result.message).to.deep.equal(oneValidProduct);
+    });
+    it("retorna erro caso não encontre o id", async function () {
+      sinon.stub(productsModel, UPDATE).resolves(oneValidProduct);
+      const result = await productsServices.update(99, newValidProduct);
+
+      expect(result.type).to.equal(NOT_FOUND);
+      expect(result.message).to.deep.equal(PRODUCT_NOT_FOUND);
     });
   });
 });
