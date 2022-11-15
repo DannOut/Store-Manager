@@ -7,6 +7,8 @@ const {
   validNameProduct,
   newValidProduct,
   removedProducts,
+  updateValidProduct,
+  updatedOneValidProduct,
 } = require("../mocks/productsMocks");
 const productsServices = require("../../../src/services/productsServices");
 
@@ -63,12 +65,12 @@ describe("Testes de unidade do products service", function () {
   });
 
   describe("Atualizando um produto no banco de dados", function () {
-    it.skip("retorna um produto atualizado", async function () {
-      sinon.stub(productsModel, UPDATE).resolves(oneValidProduct);
-      const result = await productsServices.update(1, newValidProduct);
+    it("retorna um produto atualizado", async function () {
+      sinon.stub(productsModel, UPDATE).resolves(updatedOneValidProduct);
+      const result = await productsServices.update(1, updateValidProduct);
 
       expect(result.type).to.equal(null);
-      expect(result.message).to.deep.equal(oneValidProduct);
+      expect(result.message).to.deep.equal(updatedOneValidProduct);
     });
 
     it("retorna erro caso não encontre o id", async function () {

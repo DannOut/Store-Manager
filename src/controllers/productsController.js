@@ -39,8 +39,8 @@ const removeProducts = async (req, res) => {
   const { id } = req.params;
 
   const { type, message } = await productsServices.removeProducts(Number(id));
-  console.log('TYPE', type);
-  console.log('MESSAGE', message);
+  // console.log('TYPE', type);
+  // console.log('MESSAGE', message);
   if (type) return res.status(errorMap.mapError(type)).json({ message });
 
   return res.status(204).end();

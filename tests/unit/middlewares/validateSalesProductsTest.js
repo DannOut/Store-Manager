@@ -27,7 +27,6 @@ describe("Recuperando Informações de todas as sales", function () {
     });
   });
 
-  //! SKIPADO
   it("Retornando Erro ao passar ProductId inválido", async function () {
     const res = {};
     const req = { body: invalidProductId };

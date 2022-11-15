@@ -5,6 +5,7 @@ const {
   insertTwoAtOnce,
   insertFinalObject,
   validSalesArray,
+  arraySales,
 } = require("../mocks/salesMocks");
 const salesServices = require("../../../src/services/salesServices");
 
@@ -13,6 +14,7 @@ const INSERT = "insert";
 const INSERT_SALES_PRODUCTS = "insertSalesProducts";
 const FIND_BY_ID = "findById";
 const FIND_ALL = "findAll";
+const REMOVE_SALES = 'removeSales';
 
 // * ERROR MESSAGES
 const SALE_NOT_FOUND = "Sale not found";
@@ -56,6 +58,22 @@ describe("Testes de unidade do Sales service", function () {
       const result = await salesServices.findById("abc");
       expect(result.type).to.deep.equal(INVALID_VALUE);
       expect(result.message).to.deep.equal('"id" must be a number');
+    });
+  });
+
+  describe("Removendo uma sale no banco de dados", function () {
+    it("retorna erro caso não encontre o id", async function () {
+      sinon.stub(salesModel, REMOVE_SALES).resolves(arraySales);
+      const result = await salesServices.removeSales(99);
+
+      expect(result.type).to.equal(NOT_FOUND);
+      expect(result.message).to.deep.equal(SALE_NOT_FOUND);
+    });
+
+    it("retorna tamanho total do array 2", async function () {
+      sinon.stub(salesModel, REMOVE_SALES).resolves(arraySales);
+      const result = await salesServices.removeSales(2);
+      expect(result.type).to.equal(null);
     });
   });
 });

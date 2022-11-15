@@ -1,7 +1,9 @@
 const salesModel = require('../models/salesModel');
 const productsModel = require('../models/productsModel');
 const { validateId } = require('./validations/inputValuesValidations');
-// const { validateId } = require('./validations/inputValuesValidations');
+
+const NOT_FOUND = 'NOT_FOUND';
+const SALES_NOT_FOUND = 'Sale not found';
 
 // TODO - NÂO FUNCIONA / VERIFICAR
 const createSalesProducts = async (salesArray) => {
@@ -15,7 +17,7 @@ const createSalesProducts = async (salesArray) => {
   
   const checkProducts = resultProductsData.every((value) => typeof value === 'object');
   
-  if (checkProducts === false) return { type: 'NOT_FOUND', message: 'Product not found' };
+  if (checkProducts === false) return { type: NOT_FOUND, message: 'Product not found' };
   
   const salesId = await salesModel.insert();
   await Promise.all(
@@ -38,12 +40,23 @@ const findById = async (id) => {
   if (error.type) return error;
   const sales = await salesModel.findById(id);
 
-  if (sales.length !== 0 || undefined) return { type: null, message: sales };
-  return { type: 'NOT_FOUND', message: 'Sale not found' };
+  if (sales.length !== 0) return { type: null, message: sales };
+  return { type: NOT_FOUND, message: SALES_NOT_FOUND };
+};
+
+const removeSales = async (id) => {
+  const checkIfSaleExists = await salesModel.findById(id);
+  if (checkIfSaleExists.length !== 0) {
+    const affectedRows = await salesModel.removeSales(id);
+    return { type: null, message: affectedRows };
+  }
+
+  return { type: NOT_FOUND, message: SALES_NOT_FOUND };
 };
 
 module.exports = {
   createSalesProducts,
   findAll,
   findById,
+  removeSales,
 };

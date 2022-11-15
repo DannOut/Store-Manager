@@ -27,7 +27,7 @@ describe("Testes de unidade do Sales model", function () {
   describe("Recuperando Informações de vendas", function () {
     this.beforeEach(() => {
       sinon.stub(connection, EXECUTE).resolves([validSalesArray]);
-    })
+    });
 
     it("Retorna a listagem de todas as vendas", async function () {
       const result = await salesModel.findAll();
@@ -38,6 +38,15 @@ describe("Testes de unidade do Sales model", function () {
     it("Retorna a venda a partir do seu ID", async function () {
       const result = await salesModel.findById(1);
       expect(result).to.be.deep.equal(validSalesArray);
+    });
+  });
+
+  describe("Removendo uma sale no banco de dados", function () {
+    it("retorna affectedRows igual a 1", async function () {
+      sinon.stub(connection, EXECUTE).resolves([{ affectedRows: 1 }]);
+      const result = await salesModel.removeSales(1);
+
+      expect(result).to.be.deep.equal(1);
     });
   });
 });

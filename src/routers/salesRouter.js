@@ -13,6 +13,7 @@ router.post(
 
 router.get('/', salesController.findAll);
 router.get('/:id', salesController.findById);
+router.delete('/:id', salesController.removeSales);
 
 // END ROUTERS
 module.exports = router;

@@ -17,6 +17,7 @@ chai.use(sinonChai);
 const CREATE_SALES_PRODUCTS = "createSalesProducts";
 const FIND_BY_ID = "findById";
 const FIND_ALL = "findAll";
+const REMOVE_SALES = 'removeSales'
 
 // * ERROR MESSAGES
 const NOT_FOUND = "NOT_FOUND";
@@ -100,6 +101,41 @@ describe("Testes de unidade do products controller", function () {
       await salesController.findById(req, res);
 
       expect(res.json).to.have.been.calledWith(validSalesArray);
+    });
+  });
+
+  describe("Removendo uma sale no banco de dados", function () {
+    it("removendo uma sale cadastrada", async function () {
+      sinon.stub(salesServices, REMOVE_SALES).resolves({ type: null });
+
+      const res = {};
+      const req = { params: { id: 1 } };
+
+      res.status = sinon.stub().returns(res);
+      res.end = sinon.stub().returns();
+
+      await salesController.removeSales(req, res);
+
+      expect(res.status).to.have.been.calledWith(204);
+    });
+
+    it("Erro ao não localizar o ID cadastrado para remover", async function () {
+      sinon
+        .stub(salesServices, REMOVE_SALES)
+        .resolves({ type: 404, message: SALE_NOT_FOUND });
+
+      const res = {};
+      const req = { params: { id: 999 } };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      await salesController.findById(req, res);
+      await salesController.removeSales(req, res);
+
+      expect(res.status).to.have.been.calledWith(404);
+      expect(res.json).to.have.been.calledWith({
+        message: SALE_NOT_FOUND,
+      });
     });
   });
 });

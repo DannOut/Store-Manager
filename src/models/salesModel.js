@@ -17,7 +17,7 @@ const insertSalesProducts = async ({ salesId, productId, quantity }) => {
 
 const findAll = async () => {
   const [result] = await connection.execute(
-  `SELECT SP.sale_id AS saleId, SP.product_id AS productId, SP.quantity, SA.date
+    `SELECT SP.sale_id AS saleId, SP.product_id AS productId, SP.quantity, SA.date
   FROM StoreManager.sales_products AS SP
   INNER JOIN StoreManager.sales AS SA
   ON SA.id = SP.sale_id
@@ -39,9 +39,27 @@ const findById = async (salesId) => {
   return result;
 };
 
+const removeSalesProducts = async (id) => {
+  await connection.execute(
+    'DELETE FROM StoreManager.sales_products WHERE sale_id = ?',
+    [id],
+  );
+};
+
+const removeSales = async (id) => {
+  await removeSalesProducts(id);
+
+  const [{ affectedRows }] = await connection.execute(
+    'DELETE FROM StoreManager.sales WHERE id = ?',
+    [id],
+  );
+  return affectedRows;
+};
+
 module.exports = {
   insert,
   insertSalesProducts,
   findAll,
   findById,
+  removeSales,
 };

@@ -7,6 +7,17 @@ const newCompletedSale = {
   date: "2022-11-12 15:23:12",
 };
 
+const arraySales = [
+  {
+    id: 1,
+    date: "2022-11-12 15:23:12",
+  },
+  {
+    id: 2,
+    date: "2022-11-12 15:23:12",
+  },
+];
+
 const oneValidProduct = {
   id: 1,
   name: "Martelo de Thor",
@@ -29,12 +40,11 @@ const insertTwoAtOnce = [
   },
 ];
 
-const insertFinalObject =
-  {
-    id: 1,
-    itemsSold: insertTwoAtOnce
-}
-  
+const insertFinalObject = {
+  id: 1,
+  itemsSold: insertTwoAtOnce,
+};
+
 const validSalesArray = [
   {
     saleId: 1,
@@ -72,5 +82,6 @@ module.exports = {
   newCompletedSale,
   insertFinalObject,
   validSalesArray,
-  invalidSalesArray
+  invalidSalesArray,
+  arraySales,
 };

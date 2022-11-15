@@ -35,10 +35,21 @@ const newValidProduct = {
   name: "Martelo de Thor",
 };
 
+const updateValidProduct = {
+  name: "naruto",
+};
+
+const updatedOneValidProduct = {
+  id: 1,
+  name: "naruto",
+};
+
 module.exports = {
   allValidProducts,
   oneValidProduct,
   newValidProduct,
   validNameProduct,
-  removedProducts
+  removedProducts,
+  updateValidProduct,
+  updatedOneValidProduct
 };
