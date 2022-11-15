@@ -6,6 +6,7 @@ const {
   oneValidProduct,
   validNameProduct,
   newValidProduct,
+  removedProducts,
 } = require("../mocks/productsMocks");
 const productsController = require("../../../src/controllers/productsController");
 const productsServices = require("../../../src/services/productsServices");
@@ -16,8 +17,9 @@ chai.use(sinonChai);
 //* FUNCTION MESSAGES
 const FIND_BY_ID = "findById";
 const FIND_ALL = "findAll";
-const INSERT = "insert";
+const CREATE_PRODUCTS = "createProduct";
 const UPDATE = "update";
+const REMOVE_PRODUCTS = "removeProducts";
 
 // * ERROR MESSAGES
 const PRODUCT_NOT_FOUND = "Product not found";
@@ -106,7 +108,7 @@ describe("Testes de unidade do products controller", function () {
   describe("Inserindo um produto no banco de dados", function () {
     it("Retornando o produto cadastrado", async function () {
       sinon
-        .stub(productsServices, "createProduct")
+        .stub(productsServices, CREATE_PRODUCTS)
         .resolves({ type: null, message: oneValidProduct });
 
       const res = {};
@@ -172,6 +174,41 @@ describe("Testes de unidade do products controller", function () {
 
       expect(res.status).to.have.been.calledWith(404);
       expect(res.json).to.have.been.calledWith({ message: PRODUCT_NOT_FOUND });
+    });
+  });
+
+  describe("Removendo um produto no banco de dados", function () {
+    it("removendo o produto cadastrado", async function () {
+      sinon
+        .stub(productsServices, REMOVE_PRODUCTS)
+        .resolves({ type: null });
+
+      const res = {};
+      const req = { params: { id: 1 } };
+
+      res.status = sinon.stub().returns(res);
+      res.end = sinon.stub().returns();
+
+      await productsController.removeProducts(req, res);
+
+      expect(res.status).to.have.been.calledWith(204);
+    });
+
+    it("Erro ao não localizar o ID cadastrado para remover", async function () {
+      sinon
+        .stub(productsServices, REMOVE_PRODUCTS)
+        .resolves({ type: 404, message: PRODUCT_NOT_FOUND });
+
+      const res = {};
+      const req = { params: { id: 999 } };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      await productsController.findById(req, res);
+      await productsController.removeProducts(req, res);
+
+      expect(res.status).to.have.been.calledWith(404);
+      expect(res.json).to.have.been.calledWith({ message: PRODUCT_NOT_FOUND});
     });
   });
 });

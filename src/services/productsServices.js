@@ -28,10 +28,20 @@ const createProduct = async (name) => {
 
 const update = async (id, nameToUpdate) => {
   const checkIfProductExists = await productsModel.findById(id);
-
   if (checkIfProductExists) {
     const newProductToUpdate = await productsModel.update(id, nameToUpdate);
     return { type: null, message: newProductToUpdate };
+  }
+
+  return { type: NOT_FOUND, message: PRODUCT_NOT_FOUND };
+};
+
+const removeProducts = async (id) => {
+  const checkIfProductExists = await productsModel.findById(id);
+
+  if (checkIfProductExists) {
+    const affectedRows = await productsModel.removeProducts(id);
+    return { type: null, message: affectedRows };
   }
 
   return { type: NOT_FOUND, message: PRODUCT_NOT_FOUND };
@@ -42,4 +52,5 @@ module.exports = {
   findById,
   createProduct,
   update,
+  removeProducts,
 };

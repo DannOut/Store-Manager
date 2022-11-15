@@ -6,6 +6,7 @@ const {
   oneValidProduct,
   newValidProduct,
   validNameProduct,
+  removedProducts,
 } = require("../mocks/productsMocks");
 const connection = require("../../../src/models/connection");
 
@@ -36,21 +37,38 @@ describe("Testes de unidade do products model", function () {
 
       expect(result).to.equal(1);
     });
+  });
 
-    describe("Atualizando um produto no banco de dados", function () {
-      it.skip("retorna changeRows atualizado igual a 1", async function () {
-        sinon.stub(connection, EXECUTE).resolves([ { changedRows: 1 } ]);
-        const result = await productsModel.update(1, newValidProduct);
+  describe("Atualizando um produto no banco de dados", function () {
+    it.skip("retorna changeRows atualizado igual a 1", async function () {
+      sinon.stub(connection, EXECUTE).resolves([{ changedRows: 1 }]);
+      const result = await productsModel.update(1, newValidProduct);
 
-        expect(result).to.be.deep.equal({ changedRows: 1 });
-      });
-
-      it("retorna um produto atualizado", async function () {
-        sinon.stub(connection, EXECUTE).resolves(oneValidProduct)
-        const result = await productsModel.update(1, validNameProduct);
-
-        expect(result).to.be.deep.equal(oneValidProduct)
-      });
+      expect(result).to.be.deep.equal([{ changedRows: 1 }]);
     });
+
+    it("retorna um produto atualizado", async function () {
+      sinon.stub(connection, EXECUTE).resolves(oneValidProduct);
+      const result = await productsModel.update(1, validNameProduct);
+
+      expect(result).to.be.deep.equal(oneValidProduct);
+    });
+  });
+
+  describe("Removendo um produto no banco de dados", function () {
+    it.skip("retorna um produto atualizado", async function () {
+      sinon.stub(connection, EXECUTE).resolves(removedProducts);
+      const result = await productsModel.removeProducts(1);
+
+      expect(result).to.be.equal(2);
+    });
+
+    it("retorna affectedRows igual a 1", async function () {
+      sinon.stub(connection, EXECUTE).resolves([{ affectedRows: 1 }]);
+      const result = await productsModel.removeProducts(1);
+
+      expect(result).to.be.deep.equal(1);
+    });
+
   });
 });
