@@ -49,4 +49,13 @@ describe("Testes de unidade do Sales model", function () {
       expect(result).to.be.deep.equal(1);
     });
   });
+
+  describe("Atualizando uma sale no banco de dados", function () {
+    it("retorna um produto atualizado", async function () {
+      sinon.stub(connection, EXECUTE).resolves([{ changedRows: 1}]);
+      const result = await salesModel.update(newSaleProduct);
+
+      expect(result).to.be.deep.equal(1);
+    });
+  });
 });

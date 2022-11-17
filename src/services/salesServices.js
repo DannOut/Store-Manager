@@ -1,3 +1,4 @@
+const camelize = require('camelize');
 const salesModel = require('../models/salesModel');
 const productsModel = require('../models/productsModel');
 const { validateId } = require('./validations/inputValuesValidations');
@@ -7,25 +8,24 @@ const SALES_NOT_FOUND = 'Sale not found';
 
 // TODO - NÂO FUNCIONA / VERIFICAR
 const createSalesProducts = async (salesArray) => {
+  // array que veio do body
+  // verifica se o produto existe dentro do array
   const productsData = salesArray.map((sales) =>
     productsModel.findById(sales.productId));
-  
-  // RETURN DUAS PROMISES - console.log('PRODUCTS DATA', productsData);
 
   const resultProductsData = await Promise.all(productsData);
-  // 1 UNDEFINED e UM OBJECT - console.log('RESULT PRODUCTS DATA', resultProductsData);
-  
-  const checkProducts = resultProductsData.every((value) => typeof value === 'object');
-  
-  if (checkProducts === false) return { type: NOT_FOUND, message: 'Product not found' };
-  
+  const checkProducts = resultProductsData.every(
+    (value) => typeof value === 'object',
+  );
+
+  if (checkProducts === false) { return { type: NOT_FOUND, message: 'Product not found' }; }
+
   const salesId = await salesModel.insert();
   await Promise.all(
-    salesArray.map(async (eachSale) => {
-      const teste = { salesId, ...eachSale };
-      await salesModel.insertSalesProducts(teste);
-    }),
+    salesArray.map((eachSale) =>
+      salesModel.insertSalesProducts({ salesId, ...eachSale })),
   );
+
   return { type: null, message: { id: salesId, itemsSold: salesArray } };
 };
 
@@ -54,9 +54,32 @@ const removeSales = async (id) => {
   return { type: NOT_FOUND, message: SALES_NOT_FOUND };
 };
 
+const update = async (id, arrayToUpdate) => {
+  const checkSalesId = await salesModel.findSale(id);
+
+  if (!checkSalesId) return { type: NOT_FOUND, message: SALES_NOT_FOUND };
+
+  const productsData = arrayToUpdate.map((products) =>
+    productsModel.findById(products.productId));
+  const resultProductsData = await Promise.all(productsData);
+
+  const checkProducts = resultProductsData.every(
+    (value) => typeof value === 'object',
+  );
+
+  if (checkProducts === false) { return { type: NOT_FOUND, message: 'Product not found' }; }
+
+  await Promise.all(
+    arrayToUpdate.map((eachSale) =>
+      salesModel.update({ ...checkSalesId, ...eachSale })),
+  );
+  return { type: null, message: { saleId: id, itemsUpdated: arrayToUpdate } };
+};
+
 module.exports = {
   createSalesProducts,
   findAll,
   findById,
   removeSales,
+  update,
 };

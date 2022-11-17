@@ -8,6 +8,8 @@ const {
   insertTwoAtOnce,
   insertFinalObject,
   validSalesArray,
+  updateFinalObject,
+  noSaleWithProduct,
 } = require("../mocks/salesMocks");
 
 const { expect } = chai;
@@ -17,7 +19,8 @@ chai.use(sinonChai);
 const CREATE_SALES_PRODUCTS = "createSalesProducts";
 const FIND_BY_ID = "findById";
 const FIND_ALL = "findAll";
-const REMOVE_SALES = 'removeSales'
+const REMOVE_SALES = "removeSales";
+const UPDATE = 'update';
 
 // * ERROR MESSAGES
 const NOT_FOUND = "NOT_FOUND";
@@ -136,6 +139,25 @@ describe("Testes de unidade do products controller", function () {
       expect(res.json).to.have.been.calledWith({
         message: SALE_NOT_FOUND,
       });
+    });
+  });
+
+  describe("Atualizando um sales no banco de dados", function () {
+    it("retorna uma sale atualizado", async function () {
+      sinon
+        .stub(salesServices, UPDATE)
+        .resolves({ type: null, message: updateFinalObject });
+
+      const res = {};
+      const req = { body: noSaleWithProduct, params: { id: 1 } };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      await salesController.updateSales(req, res);
+
+      expect(res.status).to.have.been.calledWith(200);
+      expect(res.json).to.have.been.calledWith(updateFinalObject);
     });
   });
 });

@@ -211,4 +211,6 @@ describe("Testes de unidade do products controller", function () {
       expect(res.json).to.have.been.calledWith({ message: PRODUCT_NOT_FOUND});
     });
   });
+
+  
 });

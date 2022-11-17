@@ -21,7 +21,7 @@ const findById = async (req, res) => {
 
   const { type, message } = await salesServices.findById(Number(id));
   if (type) return res.status(errorMap.mapError(type)).json({ message });
-  
+
   res.status(200).json(message);
 };
 
@@ -34,9 +34,24 @@ const removeSales = async (req, res) => {
   return res.status(204).end();
 };
 
+const updateSales = async (req, res) => {
+  const { id } = req.params;
+  const arrayBody = req.body;
+
+  console.log('ID ENVIADO', id);
+  console.log('ARRAY ENVIADO', arrayBody);
+
+  const { type, message } = await salesServices.update(Number(id), arrayBody);
+
+  if (type) return res.status(errorMap.mapError(type)).json({ message });
+
+  return res.status(200).json(message);
+};
+
 module.exports = {
   createSalesProducts,
   findAll,
   findById,
   removeSales,
+  updateSales,
 };

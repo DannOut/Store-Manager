@@ -6,6 +6,9 @@ const {
   insertFinalObject,
   validSalesArray,
   arraySales,
+  newValidSale,
+  noSaleWithProduct,
+  updateFinalObject,
 } = require("../mocks/salesMocks");
 const salesServices = require("../../../src/services/salesServices");
 
@@ -14,7 +17,8 @@ const INSERT = "insert";
 const INSERT_SALES_PRODUCTS = "insertSalesProducts";
 const FIND_BY_ID = "findById";
 const FIND_ALL = "findAll";
-const REMOVE_SALES = 'removeSales';
+const REMOVE_SALES = "removeSales";
+const UPDATE = "update";
 
 // * ERROR MESSAGES
 const SALE_NOT_FOUND = "Sale not found";
@@ -74,6 +78,24 @@ describe("Testes de unidade do Sales service", function () {
       sinon.stub(salesModel, REMOVE_SALES).resolves(arraySales);
       const result = await salesServices.removeSales(2);
       expect(result.type).to.equal(null);
+    });
+  });
+
+  describe("Atualizando uma venda no banco de dados", function () {
+    it("retorna um venda atualizado", async function () {
+      sinon.stub(salesModel, UPDATE).resolves([{ changedRows: 1 }]);
+      const result = await salesServices.update(1, noSaleWithProduct);
+
+      expect(result.type).to.equal(null);
+      expect(result.message).to.deep.equal(updateFinalObject);
+    });
+
+    it("retorna erro ao atualizar uma venda invalida", async function () {
+      sinon.stub(salesModel, UPDATE).resolves([]);
+      const result = await salesServices.update(999, noSaleWithProduct);
+
+      expect(result.type).to.equal(NOT_FOUND);
+      expect(result.message).to.deep.equal(SALE_NOT_FOUND);
     });
   });
 });
