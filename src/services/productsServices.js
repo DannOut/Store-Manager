@@ -47,10 +47,17 @@ const removeProducts = async (id) => {
   return { type: NOT_FOUND, message: PRODUCT_NOT_FOUND };
 };
 
+const searchByName = async (query) => {
+  const checkQuery = await productsModel.searchByName(query);
+
+  return { type: null, message: checkQuery };
+};
+
 module.exports = {
   findAll,
   findById,
   createProduct,
   update,
   removeProducts,
+  searchByName,
 };

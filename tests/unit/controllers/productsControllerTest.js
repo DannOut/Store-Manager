@@ -7,6 +7,7 @@ const {
   validNameProduct,
   newValidProduct,
   removedProducts,
+  queryToSearch,
 } = require("../mocks/productsMocks");
 const productsController = require("../../../src/controllers/productsController");
 const productsServices = require("../../../src/services/productsServices");
@@ -20,6 +21,7 @@ const FIND_ALL = "findAll";
 const CREATE_PRODUCTS = "createProduct";
 const UPDATE = "update";
 const REMOVE_PRODUCTS = "removeProducts";
+const SEARCH_BY_NAME = "searchByName";
 
 // * ERROR MESSAGES
 const PRODUCT_NOT_FOUND = "Product not found";
@@ -179,9 +181,7 @@ describe("Testes de unidade do products controller", function () {
 
   describe("Removendo um produto no banco de dados", function () {
     it("removendo o produto cadastrado", async function () {
-      sinon
-        .stub(productsServices, REMOVE_PRODUCTS)
-        .resolves({ type: null });
+      sinon.stub(productsServices, REMOVE_PRODUCTS).resolves({ type: null });
 
       const res = {};
       const req = { params: { id: 1 } };
@@ -208,9 +208,43 @@ describe("Testes de unidade do products controller", function () {
       await productsController.removeProducts(req, res);
 
       expect(res.status).to.have.been.calledWith(404);
-      expect(res.json).to.have.been.calledWith({ message: PRODUCT_NOT_FOUND});
+      expect(res.json).to.have.been.calledWith({ message: PRODUCT_NOT_FOUND });
     });
   });
 
-  
+  describe("Localizando um produto no banco de dados", function () {
+    it("Retornando o produto", async function () {
+      sinon
+        .stub(productsServices, SEARCH_BY_NAME)
+        .resolves({ type: null, message: queryToSearch });
+
+      const res = {};
+      const req = { query: { q: 'Escudo' } };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      await productsController.searchByName(req, res);
+
+      expect(res.status).to.have.been.calledWith(200);
+      expect(res.json).to.have.been.calledWith(queryToSearch);
+    });
+
+    it("Retornando todos os produtos caso nao encontre a query", async function () {
+      sinon
+        .stub(productsServices, SEARCH_BY_NAME)
+        .resolves({ type: null, message: queryToSearch });
+
+      const res = {};
+      const req = { query: { q: "" } };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      await productsController.searchByName(req, res);
+
+      expect(res.status).to.have.been.calledWith(200);
+      expect(res.json).to.have.been.calledWith(queryToSearch);
+    });
+  });
 });
