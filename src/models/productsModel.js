@@ -38,7 +38,8 @@ const removeProducts = async (id) => {
 
 const searchByName = async (query) => {
   const [result] = await connection.execute(
-    `SELECT * FROM StoreManager.products WHERE name LIKE "%${query}%"`,
+    'SELECT * FROM StoreManager.products WHERE name LIKE CONCAT("%", ?, "%")',
+    [query],
   );
   return result;
 };
