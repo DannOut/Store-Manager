@@ -44,6 +44,17 @@ const updatedOneValidProduct = {
   name: "naruto",
 };
 
+const queryToSearch = [
+  {
+    id: 2,
+    name: "Escudo do Batman",
+  },
+  {
+    id: 3,
+    name: "Escudo do Capitão América",
+  },
+];
+
 module.exports = {
   allValidProducts,
   oneValidProduct,
@@ -51,5 +62,6 @@ module.exports = {
   validNameProduct,
   removedProducts,
   updateValidProduct,
-  updatedOneValidProduct
+  updatedOneValidProduct,
+  queryToSearch,
 };

@@ -36,10 +36,19 @@ const removeProducts = async (id) => {
   return affectedRows;
 };
 
+const searchByName = async (query) => {
+  const result = await connection.execute(
+    'SELECT * FROM StoreManager.products WHERE name LIKE "%?%"',
+    [query],
+  );
+  return result;
+};
+
 module.exports = {
   findAll,
   findById,
   insert,
   update,
   removeProducts,
+  searchByName,
 };

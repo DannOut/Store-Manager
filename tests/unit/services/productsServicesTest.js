@@ -9,6 +9,7 @@ const {
   removedProducts,
   updateValidProduct,
   updatedOneValidProduct,
+  queryToSearch,
 } = require("../mocks/productsMocks");
 const productsServices = require("../../../src/services/productsServices");
 
@@ -18,6 +19,7 @@ const FIND_ALL = "findAll";
 const INSERT = "insert";
 const UPDATE = "update";
 const REMOVE_PRODUCTS = "removeProducts";
+const SEARCH_BY_NAME = "searchByName";
 
 // * ERROR MESSAGES
 const PRODUCT_NOT_FOUND = "Product not found";
@@ -95,6 +97,24 @@ describe("Testes de unidade do products service", function () {
       sinon.stub(productsModel, REMOVE_PRODUCTS).resolves(removedProducts);
       const result = await productsServices.removeProducts(2);
       expect(result.type).to.equal(null);
+    });
+  });
+
+  describe("Localizando um produto no banco de dados", function () {
+    it("Retornando o produto", async function () {
+      sinon.stub(productsModel, SEARCH_BY_NAME).resolves(queryToSearch);
+      const result = await productsServices.searchByName("Escudo");
+
+      expect(result.type).to.equal(null);
+      expect(result.message).to.deep.equal(queryToSearch);
+    });
+
+    it("Retornando todos os produtos caso nao encontre a query", async function () {
+      sinon.stub(productsModel, SEARCH_BY_NAME).resolves(queryToSearch);
+      const result = await productsServices.searchByName();
+
+      expect(result.type).to.equal(null);
+      expect(result.message).to.deep.equal(queryToSearch);
     });
   });
 });

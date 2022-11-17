@@ -2,7 +2,6 @@ const salesServices = require('../services/salesServices');
 const errorMap = require('../utils/errorMap');
 
 const createSalesProducts = async (req, res) => {
-  //* array
   const arrayBody = req.body;
 
   const { type, message } = await salesServices.createSalesProducts(arrayBody);
@@ -37,9 +36,6 @@ const removeSales = async (req, res) => {
 const updateSales = async (req, res) => {
   const { id } = req.params;
   const arrayBody = req.body;
-
-  console.log('ID ENVIADO', id);
-  console.log('ARRAY ENVIADO', arrayBody);
 
   const { type, message } = await salesServices.update(Number(id), arrayBody);
 

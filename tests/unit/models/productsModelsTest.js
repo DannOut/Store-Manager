@@ -7,6 +7,7 @@ const {
   newValidProduct,
   validNameProduct,
   removedProducts,
+  queryToSearch,
 } = require("../mocks/productsMocks");
 const connection = require("../../../src/models/connection");
 
@@ -69,6 +70,14 @@ describe("Testes de unidade do products model", function () {
 
       expect(result).to.be.deep.equal(1);
     });
-
   });
+
+    describe("Localizando um produto no banco de dados", function () {
+      it("Retornando o produto", async function () {
+        sinon.stub(connection, EXECUTE).resolves(queryToSearch);
+        const result = await productsModel.searchByName('Escudo');
+
+        expect(result).to.equal(queryToSearch);
+      });
+    });
 });
