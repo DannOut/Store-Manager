@@ -74,10 +74,10 @@ describe("Testes de unidade do products model", function () {
 
     describe("Localizando um produto no banco de dados", function () {
       it("Retornando o produto", async function () {
-        sinon.stub(connection, EXECUTE).resolves(queryToSearch);
+        sinon.stub(connection, EXECUTE).resolves([queryToSearch]);
         const result = await productsModel.searchByName('Escudo');
 
-        expect(result).to.equal(queryToSearch);
+        expect(result.length).to.equal(2);
       });
     });
 });
