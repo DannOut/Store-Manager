@@ -1,4 +1,3 @@
-const camelize = require('camelize');
 const salesModel = require('../models/salesModel');
 const productsModel = require('../models/productsModel');
 const { validateId } = require('./validations/inputValuesValidations');
